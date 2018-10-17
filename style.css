@@ -12,3 +12,19 @@ main {
     font-size: 10px;
     fill: white;
 }
+
+
+
+.axis text{
+    font-family: "Adobe Caslon Pro";
+    font-size: 20px;
+    fill: #21dadd;
+}
+
+.axis line{
+    stroke: #7cad2e;
+}
+
+.axis path{
+    stroke: #7cad2e;
+}
