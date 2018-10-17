@@ -49,7 +49,7 @@ function treemap(element) {
         return;
     }
 
-    var color = d3.scaleOrdinal(['#7C1354','#B2190E','#FF9F1C','#7CAD2E','#21DADD']);
+    var color = d3.scaleOrdinal(['#21DADD','#7CAD2E','#FF9F1C','#B2190E','#7C1354']);
 
     var nested_data = d3.nest()
         .key(function (d) {
