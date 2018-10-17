@@ -49,7 +49,7 @@ function treemap(element) {
         return;
     }
 
-    var color = d3.scaleOrdinal(['#7C1354','#B2190E','#FF9F1C','#7CAD2E','#21DADD']);
+    var color = d3.scaleOrdinal(['#21DADD','#7CAD2E','#FF9F1C','#B2190E','#7C1354']);
 
     var nested_data = d3.nest()
         .key(function (d) {
@@ -147,9 +147,15 @@ function bar_chart(element, property) {
     console.log("BARCHART DATA");
     console.log(nested_data);
 
-    var x = d3.scaleBand()
-        .rangeRound([0, width])
-        .paddingInner(0.1);
+    if (property ==="time"){
+    var x = d3.scaleLinear()
+        .rangeRound([0, width]);}
+
+    else{
+        x = d3.scaleBand()
+            .rangeRound([0, width])
+            .paddingInner(0.1);
+    }
 
     var y = d3.scaleLinear()
         .rangeRound([height, 0]);
@@ -189,10 +195,17 @@ function bar_chart(element, property) {
             return height - y(d.value.size);
         })
         .attr("width", function (d) {
-            return x.bandwidth();
+            if (property ==="time"){
+                return(10);
+            }
+            else{
+                return x.bandwidth();
+            }
+            return (1000);
         })
         .style("fill", function (d) {
             return z(d.key)
+
         });
 
     g.append("g")
@@ -219,6 +232,8 @@ $(function () {
         });
         bar_chart("bcs", "status");
         bar_chart("bcw", "who");
+        bar_chart("bcp", "priority");
+        bar_chart("bct", "time");
         treemap("status");
 
     });
