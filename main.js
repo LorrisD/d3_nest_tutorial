@@ -36,7 +36,7 @@ function legend(element, keys, z) {
         });
 }
 
-function treemap(element) {
+function treemap(element,propertya, propertyb) {
 
     $("#treemap_" + element).html("");
     $("#legend_" + element).html("");
@@ -53,10 +53,10 @@ function treemap(element) {
 
     var nested_data = d3.nest()
         .key(function (d) {
-            return d.status;
+            return d[propertya];
         })
         .key(function (d) {
-            return d.who;
+            return d[propertyb];
         })
         .rollup(function (d) {
             return d.length;
@@ -234,7 +234,8 @@ $(function () {
         bar_chart("bcw", "who");
         bar_chart("bcp", "priority");
         bar_chart("bct", "time");
-        treemap("status");
+        treemap("status","status", "who");
+        treemap("who","who","priority");
 
     });
 
