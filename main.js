@@ -236,6 +236,19 @@ function bar_chart(element, property) {
             return z(d.key)
 
         })
+        .on("mouseover", function(d){
+            d3.select(this)
+                .transition().duration(100)
+                .attr("fill", "black")
+                .attr("y", y(d.value.size) - 100)
+        })
+        .on("mouseout", function(d){
+            d3.select(this)
+                .transition().duration(100)
+                .attr("fill", "black")
+                .attr("y", y(d.value.size))
+        })
+
 
     g.append("g")
         .attr("class", "axis")
