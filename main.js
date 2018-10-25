@@ -1,6 +1,6 @@
 var data = undefined;
 // taille de la marge en haut
-var margin = {top: 20, right: 20, bottom: 30, left: 40};
+var margin = {top: 20, right: 40, bottom: 30, left: 40};
 
 // définiton de la legende
 function legend(element, keys, z) {
@@ -58,7 +58,7 @@ function treemap(element,propertya, propertyb) {
     // recherche de la légende pour la treemap
     $("#legend_" + element).html("");
     // espace pour la treemap
-    var svg = d3.select("#treemap_" + element).append("svg").attr("width", 600).attr("height", 300);
+    var svg = d3.select("#treemap_" + element).append("svg").attr("width", 1200).attr("height", 600);
     //espacement entre les deux treemap
     var width = +svg.attr("width") - margin.left - margin.right;
     // espace pour ne pas le cacher derrière la footer
@@ -148,7 +148,7 @@ function treemap(element,propertya, propertyb) {
 function bar_chart(element, property) {
     $("#" + element).html("");
     // espace pour lebarchart
-    var svg = d3.select("#" + element).append("svg").attr("width", 300).attr("height", 300);
+    var svg = d3.select("#" + element).append("svg").attr("width", 600).attr("height", 600);
     // emplacement du barchart par rapport au côté de la zone
     var width = +svg.attr("width") - margin.left - margin.right;
     var height = +svg.attr("height") - margin.top - margin.bottom;
