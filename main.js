@@ -235,7 +235,7 @@ function bar_chart(element, property) {
         .style("fill", function (d) {
             return z(d.key)
 
-        });
+        })
 
     g.append("g")
         .attr("class", "axis")
