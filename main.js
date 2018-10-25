@@ -1,6 +1,6 @@
 var data = undefined;
 // taille de la marge en haut
-var margin = {top: 20, right: 40, bottom: 30, left: 40};
+var margin = {top: 20, right: 20, bottom: 30, left: 40};
 
 // définiton de la legende
 function legend(element, keys, z) {
@@ -8,14 +8,14 @@ function legend(element, keys, z) {
     var legendRectSize = 15;
     // taille de la partie où sera la légende
     var svg = d3.select('#'+element).append('svg')
-        // taille en hauteur
+    // taille en hauteur
         .attr('width', 400)
         // taille en largeur
         .attr('height', 30);
 
 //
     var legend = svg.selectAll('.legend')
-        // analyse de la datakeys
+    // analyse de la datakeys
         .data(keys)
         .enter()
         .append('g')
@@ -28,7 +28,7 @@ function legend(element, keys, z) {
         });
 // place des carrés
     legend.append('rect')
-        // taille du carré en largeur
+    // taille du carré en largeur
         .attr('width', legendRectSize)
         // taille du carré en largeur
         .attr('height', legendRectSize)
@@ -41,7 +41,7 @@ function legend(element, keys, z) {
 
 // place du texte par rapport aux carrés
     legend.append('text')
-        //espace entre le carré et le texte en largeur
+    //espace entre le carré et le texte en largeur
         .attr('x', legendRectSize + 5)
         // espace entre le carré et le texte en hauteur
         .attr('y', 15)
@@ -58,7 +58,7 @@ function treemap(element,propertya, propertyb) {
     // recherche de la légende pour la treemap
     $("#legend_" + element).html("");
     // espace pour la treemap
-    var svg = d3.select("#treemap_" + element).append("svg").attr("width", 1200).attr("height", 600);
+    var svg = d3.select("#treemap_" + element).append("svg").attr("width", 600).attr("height", 300);
     //espacement entre les deux treemap
     var width = +svg.attr("width") - margin.left - margin.right;
     // espace pour ne pas le cacher derrière la footer
@@ -148,7 +148,7 @@ function treemap(element,propertya, propertyb) {
 function bar_chart(element, property) {
     $("#" + element).html("");
     // espace pour lebarchart
-    var svg = d3.select("#" + element).append("svg").attr("width", 600).attr("height", 600);
+    var svg = d3.select("#" + element).append("svg").attr("width", 300).attr("height", 300);
     // emplacement du barchart par rapport au côté de la zone
     var width = +svg.attr("width") - margin.left - margin.right;
     var height = +svg.attr("height") - margin.top - margin.bottom;
@@ -176,8 +176,8 @@ function bar_chart(element, property) {
     console.log(nested_data);
 
     if (property ==="time"){
-    var x = d3.scaleLinear()
-        .rangeRound([0, width]);}
+        var x = d3.scaleLinear()
+            .rangeRound([0, width]);}
 
     else{
         x = d3.scaleBand()
@@ -235,20 +235,7 @@ function bar_chart(element, property) {
         .style("fill", function (d) {
             return z(d.key)
 
-        })
-        .on("mouseover", function(d){
-            d3.select(this)
-                .transition().duration(100)
-                .attr("fill", "black")
-                .attr("y", y(d.value.size) - 100)
-        })
-        .on("mouseout", function(d){
-            d3.select(this)
-                .transition().duration(100)
-                .attr("fill", "black")
-                .attr("y", y(d.value.size))
-        })
-
+        });
 
     g.append("g")
         .attr("class", "axis")
@@ -260,18 +247,33 @@ function bar_chart(element, property) {
         .call(d3.axisLeft(y).ticks(null, "s"))
 }
 
+function bar_chart_temps(element, property) {
+    $("#" + element).html("");
+    d3.select("#" + element).append("text").text(property);
+}
+
 $(function () {
     console.log("READY");
-// adresse des données
+// adresse des données contenues dans un gdoc
     var URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQfeT9lPtJ5ia2XsopWVdvl98Oy7Bu6xL9SVQBEh32OXC8Qk4MKYxr2TcGSSTkAs7kAMfjF83IEGhQ-";
     URL += "/pub?single=true&output=csv";
 
 
     d3.csv(URL, function (d) {
         data = d;
+        temps_tout = 0;
+        temps_joe = 0;
+        temps_encours = 0;
         data.forEach(function (d) {
-            d.time = +d.time;
-        });
+                d.time = +d.time;
+                temps_tout += d.time;
+                if (d.who == "Joe"){
+                    temps_joe += d.time;
+                }
+                if (d.status == "DOING"){
+                    temps_encours += d.time;
+                }
+            });
         //pour la barchart id bcs, trier par status,
         bar_chart("bcs", "status");
         //pour la barchart id bcw, trier par who
@@ -284,6 +286,9 @@ $(function () {
         treemap("status","status", "who");
         //pour la treemap, trier par priority
         treemap("who","who","priority");
+        bar_chart_temps("temps_tout",temps_tout);
+        bar_chart_temps("temps_joe",temps_joe);
+        bar_chart_temps("temps_encours",temps_encours);
 
     });
 
